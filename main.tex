@@ -14,13 +14,40 @@
 \usepackage{chemfig}%化学式
 \usetikzlibrary{trees}
 
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{float}
+\usepackage{makecell}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[section]{placeins}
+\usepackage{url}
+\usepackage[backend=biber,bibstyle=gb7714-2015,gbnamefmt=lowercase,gbpub=false]{biblatex}
+\addbibresource{ref/test.bib}
+\newcommand{\upcite}[1]{\textsuperscript{\textsuperscript{\cite{#1}}}}
+
+% list figure and table name
+\renewcommand{\listfigurename}{图目录}
+\renewcommand{\listtablename}{表目录}
+
+\floatname{algorithm}{算法}
+\counterwithin{algorithm}{chapter}
+
+\renewcommand{\algorithmicrequire}{\textbf{输入：}}
+%Use Input in the format of Algorithm
+\renewcommand{\algorithmicensure}{\textbf{输出：}}
+%UseOutput in the format of Algorithm
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
 
 
 %将封面信息补全，相关专业名称过长的请在文字前添加命令\ziju{-0.15}
 %文头
 \sign{中国人民大学本科毕业论文}
-%\sign{中国人民大学硕士学位论文}
-%\sign{中国人民大学博士学位论文}
+%\sign{硕士学位论文}
+%\sign{博士学位论文}
 
 
 
@@ -55,32 +82,36 @@
 %扉页
 \maketitle
 
-%独创性声明
-\originality
-%授权书在这插入
-\authorization{figures/shouquan.png}
-%中文摘要
-\include{format/cabstractpage}
-%英文摘要
-\include{format/eabstractpage}
-
 %覆盖plain页眉格式，使chapter首页也有页眉
 \fancypagestyle{plain}{
 	\pagestyle{fancy}
 }
 
+%独创性声明
+\originality
+%授权书在这插入
+\authorization{figures/shouquan.png}
+%中文摘要
+\pagestyle{fancy}
+\include{format/cabstractpage}
+%英文摘要
+\include{format/eabstractpage}
+
+
+
 \frontmatter
 
 %正文目录
+\pagenumbering{arabic}
 \tableofcontents
 %插图目录
-\listoffigures
+{\renewcommand{\addvspace}[1]{} \listoffigures}
 %表格目录
-\listoftables
+{\renewcommand{\addvspace}[1]{} \listoftables}
 
 
 \mainmatter\clearpage
-\pagestyle{fancy}
+\pagestyle{newformat}
 
 %正文章节
 \include{chap/chapter1}
@@ -93,11 +124,9 @@
 
 
 %参考文献
-\bibliographystyle{ref/rucbib}
-\setcitestyle{super,square,comma,sort&compress}
-\bibliography{ref/test}
-\nocite{*}
+\cleardoublepage
 \addcontentsline{toc}{chapter}{参考文献}
+\printbibliography
 
 %附录
 \appendix

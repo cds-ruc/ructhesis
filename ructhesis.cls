@@ -40,8 +40,9 @@
 \DeclareOption{shuji}{\ruc@shujitrue}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexbook}}
 \ProcessOptions\relax
-\ifruc@doctor\LoadClass[UTF8,zihao=-4,twoside,openright,fancyhdr]{ctexbook}
-\else\LoadClass[UTF8,zihao=-4,oneside,openany,fancyhdr]{ctexbook}\fi
+% bechelor class
+\ifruc@bachelor\LoadClass[UTF8,zihao=-4,oneside,openany,AutoFakeBold,scheme=chinese,fancyhdr]{ctexbook}
+\else\LoadClass[UTF8,zihao=-4,twoside,openright,AutoFakeBold,scheme=chinese,fancyhdr,article]{ctexbook}\fi
 \def\thesiscode#1{\gdef\@thesiscode{#1}}
 \def\sign#1{\gdef\@sign{#1}}
 \def\esign#1{\gdef\@esign{#1}}
@@ -89,9 +90,16 @@ pdfsubject={中国人民大学学位论文}}
 \setsansfont{ArialMT}
 \setmonofont{CourierNewPSMT}
 \xeCJKsetup{AutoFakeSlant={true}}
-\setCJKmainfont{SimSun}
-\setCJKsansfont{SimHei}
-\setCJKmonofont{FangSong}
+\xeCJKsetup{AutoFakeBold={true}}
+\setCJKmainfont{simsun.ttc}
+\setCJKsansfont{simhei.ttf}
+\setCJKmonofont{simfang.ttf}
+\setCJKfamilyfont{hei}{simhei.ttf}[AutoFakeBold]
+\setCJKfamilyfont{song}{simsun.ttc}[AutoFakeBold]
+\setCJKfamilyfont{fangsong}{simfang.ttf}[AutoFakeBold]
+\renewcommand{\heiti}{\CJKfamily{hei}}
+\renewcommand{\songti}{\CJKfamily{song}}
+\renewcommand{\fangsong}{\CJKfamily{fangsong}}
 \newcommand{\rowspace}{%
 \setlength{\lineskiplimit}{2.625bp}
 \setlength{\lineskip}{2.625bp}
@@ -159,6 +167,19 @@ pdfsubject={中国人民大学学位论文}}
 \fancyfoot[RO,RE]{\thepage}
 \fi
 \fi}
+\fancypagestyle{noheader}{
+  \fancyhf{}% Clear header/footer
+  \renewcommand{\headrulewidth}{0pt}% No header rule
+  \fancyfoot[LE]{\thepage}
+  \fancyfoot[RO]{\thepage}
+}
+\fancypagestyle{newformat}{
+  \fancyhf{}% Clear header/footer
+  \fancyhead[C]{\zihao{5}\@title}
+  \renewcommand{\headrulewidth}{0.4pt} % 页眉的下划线, 宽度 0.4 磅
+  \fancyfoot[LE]{\thepage}
+  \fancyfoot[RO]{\thepage}
+}
 \RequirePackage{graphicx}
 \newif\if@subtitle
 \ifruc@bachelor
@@ -191,31 +212,23 @@ pdfsubject={中国人民大学学位论文}}
 \sf\zihao{1}\ziju{0.4}\@sign\par
 \tt\zihao{3}
 \vspace{25mm}\ziju{0}\linespread{1.5}\selectfont
-（中文题目）\underline{\parbox[b]{110mm}\@title}\hfill\par\vspace{3mm}
-（英文题目）\underline{\parbox[b]{110mm}\@etitle}\hfill\par
+\songti\selectfont{（中文题目）}\fangsong\underline{\parbox[b]{110mm}\@title}\hfill\par\vspace{3mm}
+\songti\selectfont{（英文题目）}\underline{\parbox[b]{110mm}\@etitle}\hfill\par
 \vfill\ziju{0.65}
-作者学号：\underline{\makebox[80mm]\@studentid}\hfill\par
-作者姓名：\underline{\makebox[80mm]\@author}\hfill\par
-所在学院：\underline{\makebox[80mm]{\ziju{0.2}\@school}}\hfill\par
-专业名称：\underline{\parbox[b]{80mm}{\centering\ziju{0}\@field}}\hfill\par\ziju{0.65}
-导师姓名：\underline{\makebox[80mm]\@advisor}\hfill\par\ %
+\songti\selectfont{作者学号：}\fangsong\underline{\makebox[80mm]\@studentid}\hfill\par
+\songti\selectfont{作者姓名：}\fangsong\underline{\makebox[80mm]\@author}\hfill\par
+\songti\selectfont{所在学院：}\fangsong\underline{\makebox[80mm]{\ziju{0.2}\@school}}\hfill\par
+\songti\selectfont{专业名称：}\fangsong\underline{\parbox[b]{80mm}{\centering\ziju{0}\@field}}\hfill\par\ziju{0.65}
+\songti\selectfont{导师姓名：}\fangsong\underline{\makebox[80mm]\@advisor}\hfill\par\ %
 \ziju{0.25}
-论文主题词：\underline{\parbox[b]{80mm}{\vspace*{1pt}\centering\ziju{0}\@keywords}}
+\songti\selectfont{论文主题词：}\fangsong\underline{\parbox[b]{80mm}{\vspace*{1pt}\centering\ziju{0}\@keywords}}
 \hfill\par\ziju{0}
-论文提交日期：\underline{\makebox[80mm]\@date}\hfill
+\songti\selectfont{论文提交日期：}\fangsong\underline{\makebox[80mm]\@date}\hfill
 \end{center}
 \rowspace%研究生全文行距
 \clearpage
 \if@twoside
 \thispagestyle{empty}
-\vspace*{\stretch{1}}
-{\zihao{5}
-\definecolor{light-gray}{gray}{0.86}
-\noindent
-\textcolor{light-gray}{
-Typeset by \LaTeXe{}\\
-With package \tt{\RUCThesis}\\
-}}
 \cleardoublepage
 \fi
 }
@@ -230,12 +243,12 @@ With package \tt{\RUCThesis}\\
 {\clearpage
 \ifruc@bachelor\linespread{2}\selectfont
 \chapter*{\bf{\eabstractpagesign}}\vspace*{-5mm}
-\else\chapter*{\sf{\eabstractpagesign}}\vspace*{-5mm}\fi
+\else\chapter*{\eabstractpagesign}\vspace*{-5mm}\fi
 \zihao{-4}\rm}
 {\par\vspace*{7mm}\noindent
 \zihao{-4}\textbf{Key Words : }
 \rm\zihao{-4}\@keyworden
-\thispagestyle{fancy}\rowspace}
+\thispagestyle{fancy}}
 \newenvironment{acknowledge}
 {\chapter*{\acknowledgesign}\vspace*{-5mm}
 \addcontentsline{toc}{chapter}{\acknowledgesign}\zihao{-4}\rm}
@@ -249,18 +262,18 @@ text={\paperwidth,\paperheight},marginparwidth=0mm}\hspace{-9mm}
 \restoregeometry}
 \newcommand{\originality}{
 \chapter*{\zihao{-2}\heiti 独创性声明}
-{\tt\zihao{-4}本人郑重声明：所呈交的论文是我个人在导师的指导下进行的研究工作及取得的研究成果。尽我所知，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写的研究成果，也不包含为获得中国人民大学或其他教育机构的学位或证书所使用过的材料。与我一同工作的同志对本研究所做的任何贡献均已在论文中作了明确的说明并表示了谢意。\par}
+{\tt\zihao{-4}\songti 本人郑重声明：所呈交的论文是我个人在导师的指导下进行的研究工作及取得的研究成果。尽我所知，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写的研究成果，也不包含为获得中国人民大学或其他教育机构的学位或证书所使用过的材料。与我一同工作的同志对本研究所做的任何贡献均已在论文中作了明确的说明并表示了谢意。\par}
 \vskip 10mm\hfill
-论文作者：\rule[-1ex]{30mm}{0.25pt}\qquad
+论文作者（签名）：\rule[-1ex]{30mm}{0.25pt}\qquad
 日\qquad 期：\rule[-1ex]{30mm}{0.25pt}\par
 \vfil\centerline{\heiti\zihao{-2}关于论文使用授权的说明}
 \vskip 13mm
-{\tt 本人完全了解中国人民大学有关保留、使用学位论文的规定，即：学校有保留送交论文的复印件，允许论文被查阅和借阅；学校可以公布论文的全部或部分内容，可以采用影印、缩印或其他复制手段保存论文。\par
+{\tt\songti  本人完全了解中国人民大学有关保留、使用学位论文的规定，即：学校有保留送交论文的复印件，允许论文被查阅和借阅；学校可以公布论文的全部或部分内容，可以采用影印、缩印或其他复制手段保存论文。\par
 \vskip 10mm\hfill
-论文作者：\rule[-1ex]{30mm}{0.25pt}\qquad
+论文作者（签名）：\rule[-1ex]{30mm}{0.25pt}\qquad
 日\qquad 期：\rule[-1ex]{30mm}{0.25pt}\par
 \hfill \rule[0mm]{0mm}{8mm}
-指导老师：\rule[-1ex]{30mm}{0.25pt}\qquad
+指导老师（签名）：\rule[-1ex]{30mm}{0.25pt}\qquad
 日\qquad 期：\rule[-1ex]{30mm}{0.25pt}\par}
 \thispagestyle{empty}
 }
@@ -473,7 +486,6 @@ subsubsection/numberformat = \bf\zihao{5}
 \end{landscape}
 \restoregeometry
 }
-\RequirePackage{natbib}%参考文献
 \RequirePackage{caption2}
 \captionstyle{normal}
 \renewcommand{\captionfont}{\zihao{5}\rm}
